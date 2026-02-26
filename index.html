@@ -8,6 +8,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WAVE CRM">
 <meta name="theme-color" content="#0a0a0a">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
 <title>WAVE CRM</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -28,9 +30,14 @@
 
 - { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
+html, body {
+background: #080c12 !important;
+color: #dce8ff !important;
+}
+
 body {
-background: var(–bg);
-color: var(–text);
+background: #080c12 !important;
+color: #dce8ff !important;
 font-family: ‘DM Mono’, monospace;
 min-height: 100vh;
 overflow-x: hidden;
@@ -41,9 +48,9 @@ header {
 position: sticky;
 top: 0;
 z-index: 100;
-background: rgba(10,10,10,0.95);
+background: rgba(8,12,18,0.97) !important;
 backdrop-filter: blur(20px);
-border-bottom: 1px solid var(–border);
+border-bottom: 1px solid #1e2a3d;
 padding: 16px 20px;
 display: flex;
 align-items: center;
@@ -79,8 +86,8 @@ letter-spacing: 0.5px;
 /* NAV */
 nav {
 display: flex;
-border-bottom: 1px solid var(–border);
-background: var(–bg);
+border-bottom: 1px solid #1e2a3d;
+background: #080c12 !important;
 position: sticky;
 top: 61px;
 z-index: 99;
@@ -108,7 +115,7 @@ border-bottom-color: var(–accent);
 }
 
 /* PAGES */
-.page { display: none; padding: 20px; padding-bottom: 100px; }
+.page { display: none; padding: 20px; padding-bottom: 100px; background: #080c12 !important; }
 .page.active { display: block; }
 
 /* STATS ROW */
@@ -120,8 +127,8 @@ margin-bottom: 24px;
 }
 
 .stat-card {
-background: var(–surface);
-border: 1px solid var(–border);
+background: #0e1420 !important;
+border: 1px solid #1e2a3d !important;
 border-radius: 12px;
 padding: 14px 12px;
 text-align: center;
@@ -162,8 +169,8 @@ color: var(–muted);
 
 /* LEAD CARD */
 .lead-card {
-background: var(–surface);
-border: 1px solid var(–border);
+background: #0e1420 !important;
+border: 1px solid #1e2a3d !important;
 border-radius: 14px;
 padding: 16px;
 margin-bottom: 10px;
@@ -292,7 +299,7 @@ backdrop-filter: blur(4px);
 .modal-overlay.open { display: flex; }
 
 .modal {
-background: var(–surface);
+background: #0e1420 !important;
 border-radius: 24px 24px 0 0;
 padding: 24px 20px 40px;
 width: 100%;
@@ -335,22 +342,24 @@ margin-bottom: 6px;
 
 input, select, textarea {
 width: 100%;
-background: var(–surface2);
-border: 1px solid var(–border);
+background: #151d2e !important;
+border: 1px solid #1e2a3d !important;
 border-radius: 10px;
-color: var(–text);
+color: #dce8ff !important;
 font-family: ‘DM Mono’, monospace;
 font-size: 14px;
 padding: 12px 14px;
 outline: none;
 transition: border-color 0.2s;
+-webkit-appearance: none;
+appearance: none;
 }
 
 input:focus, select:focus, textarea:focus {
-border-color: var(–accent);
+border-color: #5b9cf6 !important;
 }
 
-select option { background: var(–surface2); }
+select option { background: #151d2e !important; color: #dce8ff !important; }
 
 textarea { resize: none; height: 70px; }
 
@@ -374,7 +383,7 @@ transition: transform 0.15s;
 
 .btn:active { transform: scale(0.97); }
 .btn-primary { background: var(–accent); color: #0a0a0a; }
-.btn-ghost { background: var(–surface2); color: var(–text); }
+.btn-ghost { background: #151d2e !important; color: #dce8ff !important; }
 .btn-danger { background: rgba(255,107,53,0.15); color: var(–hot); }
 .btn-full { grid-column: 1 / -1; }
 
@@ -416,8 +425,8 @@ margin-left: auto;
 
 /* REVENUE PAGE */
 .revenue-big {
-background: var(–surface);
-border: 1px solid var(–border);
+background: #0e1420 !important;
+border: 1px solid #1e2a3d !important;
 border-radius: 16px;
 padding: 24px;
 margin-bottom: 20px;
@@ -441,8 +450,8 @@ margin-top: 4px;
 }
 
 .sale-item {
-background: var(–surface);
-border: 1px solid var(–border);
+background: #0e1420 !important;
+border: 1px solid #1e2a3d !important;
 border-radius: 12px;
 padding: 14px 16px;
 margin-bottom: 8px;
@@ -595,8 +604,8 @@ line-height: 1.6;
 }
 
 .producer-card {
-background: var(–surface);
-border: 1px solid var(–border);
+background: #0e1420 !important;
+border: 1px solid #1e2a3d !important;
 border-radius: 14px;
 padding: 16px;
 margin-bottom: 10px;
