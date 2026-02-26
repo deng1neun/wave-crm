@@ -743,6 +743,22 @@ transition: background 0.15s;
 }
 .email-tag:active { background: rgba(91,156,246,0.2); }
 
+.backup-btn {
+width: 100%;
+background: #0e1420 !important;
+border: 1px dashed #1e2a3d !important;
+color: #4a5d7a !important;
+font-family: ‘Syne’, sans-serif;
+font-weight: 600;
+font-size: 13px;
+padding: 14px;
+border-radius: 12px;
+cursor: pointer;
+text-align: center;
+transition: border-color 0.2s, color 0.2s;
+}
+.backup-btn:active { border-color: #5b9cf6 !important; color: #5b9cf6 !important; }
+
 .bar-chart { margin: 16px 0; }
 .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .bar-label { font-size: 10px; color: var(–muted); width: 70px; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -795,6 +811,13 @@ transition: background 0.15s;
     <span class="section-title">Recent Leads</span>
   </div>
   <div id="recentLeads"></div>
+
+  <!-- Backup -->
+
+  <div class="section-head" style="margin-top:24px">
+    <span class="section-title">Data</span>
+  </div>
+  <button class="backup-btn" onclick="openBackupModal()">💾 Backup & Restore</button>
 </div>
 
 <div id="page-pipeline" class="page">
@@ -1424,6 +1447,54 @@ function renderProducers() {
   }).join('');
 }
 
+// ─── BACKUP & RESTORE ───────────────────────────────────
+function openBackupModal() {
+  document.getElementById('importText').value = '';
+  document.getElementById('backupModal').classList.add('open');
+}
+
+function exportData() {
+  const backup = {
+    leads,
+    producers,
+    exportedAt: new Date().toISOString(),
+    version: 1
+  };
+  const code = btoa(JSON.stringify(backup));
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(() => {
+      alert('✅ Backup code copied!\n\nPaste it in your Notes app to keep it safe. You can restore from it anytime.');
+    }).catch(() => {
+      promptCopyFallback(code);
+    });
+  } else {
+    promptCopyFallback(code);
+  }
+}
+
+function promptCopyFallback(code) {
+  document.getElementById('importText').value = code;
+  alert('Your backup code is now in the text box below. Select all and copy it manually, then paste it somewhere safe like Notes.');
+}
+
+function importData() {
+  const raw = document.getElementById('importText').value.trim();
+  if (!raw) { alert('Please paste your backup code first.'); return; }
+  try {
+    const backup = JSON.parse(atob(raw));
+    if (!backup.leads || !backup.producers) throw new Error('Invalid');
+    if (!confirm(`Restore ${backup.leads.length} leads and ${backup.producers.length} producers?\n\nThis will replace your current data.`)) return;
+    leads = backup.leads;
+    producers = backup.producers;
+    saveData();
+    closeModal('backupModal');
+    render();
+    alert('✅ Data restored successfully!');
+  } catch(e) {
+    alert('❌ Invalid backup code. Make sure you copied the full code.');
+  }
+}
+
 // ─── INIT ────────────────────────────────────────────────
 (async () => {
   await loadData();
@@ -1511,6 +1582,36 @@ function renderProducers() {
     <div class="btn-row" style="margin-top:8px">
       <button class="btn btn-danger btn-full" onclick="deleteProducer()">Remove Producer</button>
     </div>
+  </div>
+</div>
+
+<!-- BACKUP MODAL -->
+
+<div class="modal-overlay" id="backupModal" onclick="closeOnOverlay(event, 'backupModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">💾 Backup & Restore</div>
+
+```
+<p style="font-size:12px;color:#4a5d7a;margin-bottom:20px;line-height:1.6">
+  Use this to save your data before deleting the app, or to move your data to a new device.
+</p>
+
+<div style="margin-bottom:20px">
+  <label style="color:#5b9cf6;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;display:block">Step 1 — Export your data</label>
+  <button class="btn btn-primary btn-full" onclick="exportData()" style="margin-bottom:8px">📤 Copy Backup Code</button>
+  <p style="font-size:10px;color:#4a5d7a;line-height:1.5">Copies a code to your clipboard. Paste it in Notes or anywhere safe.</p>
+</div>
+
+<div style="border-top:1px solid #1e2a3d;padding-top:20px;margin-bottom:20px">
+  <label style="color:#5b9cf6;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;display:block">Step 2 — Restore from backup</label>
+  <textarea id="importText" placeholder="Paste your backup code here..." style="height:90px;margin-bottom:8px;font-size:11px"></textarea>
+  <button class="btn btn-ghost btn-full" onclick="importData()">📥 Restore Data</button>
+</div>
+
+<button class="btn btn-ghost btn-full" onclick="closeModal('backupModal')">Close</button>
+```
+
   </div>
 </div>
 
